@@ -4,21 +4,21 @@ describe('Basic Functionality', () => {
         jest.resetModules();
         const eventCounter = require('./eventCounter.js');
     });
-    test('Tests 0 Counts', () => {
+    test('Test 0 Counts', () => {
         const eventCounter = require('./eventCounter.js');
         expect(eventCounter.reportCount(1)).toBe(0);       
     });
-    test('Tests a Single Count', () => {     
+    test('Test Single Count', () => {     
         const eventCounter = require('./eventCounter.js');
         eventCounter.receiveCount();
         expect(eventCounter.reportCount(1)).toBe(1);
     });  
-    test('Tests Seconds over Maximum Time', () => {
+    test('Test Seconds over Maximum Time', () => {
         const eventCounter = require('./eventCounter.js');
         eventCounter.receiveCount();
         expect(eventCounter.reportCount(1000000)).toBe(1);
     });  
-    test('Tests Several Counts', () => {
+    test('Test Several Counts', () => {
         const eventCounter = require('./eventCounter.js');
         for(var i = 0; i < 100; i++){
             eventCounter.receiveCount();
@@ -45,7 +45,7 @@ describe('Basic Functionality', () => {
         }, 20000)
         jest.advanceTimersByTime(20000);
     });
-    test('Test Pruning', () => {
+    test('Test Timeout', () => {
         const eventCounter = require('./eventCounter.js');
         const dateMock = require('jest-date-mock');
         var tenMinutesBefore = new Date();
@@ -66,7 +66,7 @@ describe('Basic Functionality', () => {
 describe('Stress Testing', () => {
     test('Request Overload', () => {
         const eventCounter = require('./eventCounter.js');        
-        for(var i = 0; i < 10000000000; i++){
+        for(var i = 0; i < 100000000; i++){
             eventCounter.receiveCount();
         }
     });

@@ -1,10 +1,20 @@
-var Queue = require('./Queue.js');
-var events = new Queue.Queue(); //Queue
 var maxTime = 300000; //5 minutes in ms
-var intervalTime = 10;
+var eventTime = [];
+var eventCount = [];
+
+for(let i = 0; i < maxTime; i++){
+    eventCount[i] = 0;
+}
 
 function receiveCount(){
-    events.enqueue(Date.now());
+    var now = Date.now();
+    var index = now % maxTime;
+    if(eventTime[index] != now){
+        eventTime[index] = now;
+        eventCount[index] = 1;
+    } else {
+        eventCount[now % maxTime]++;
+    }    
 }
 
 function reportCount(seconds){
@@ -13,26 +23,13 @@ function reportCount(seconds){
         ms = maxTime;
     }
     var count = 0;
-    var currentTime = Date.now();
-    for(let i = events.size() - 1; i >= 0; i--){
-        if(currentTime - events.store[i] <= ms){
-            count++;
-        } else {
-            break;
+    var now = Date.now();
+    for(let i = 0; i < maxTime; i++){
+        if(now - eventTime[i] <= ms){
+            count = count + eventCount[i];
         }
     }
-    pruneEvents();
     return count;
-}
-
-function pruneEvents(){
-    while(events.size() > 0 && events.peek()){
-        if(Date.now() - events.peek() >= maxTime){
-            events.dequeue();
-        } else {
-            break;
-        }
-    }
 }
 
 module.exports = {
