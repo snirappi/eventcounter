@@ -1,6 +1,7 @@
 {
     "scripts": {
-        "test": "jest --coverage"
+        "test": "jest --coverage",
+        "test:simple": "jest --coverage -t 'Basic Functionality'"
     },
     "devDependencies": {
         "jest": "^26.4.0",
